@@ -1,15 +1,63 @@
-# AndreMiras/coveralls-python-action
+# coveralls-python-action
 
-Python coverage reports via coveralls.io
+[![push](https://github.com/AndreMiras/coveralls-python-action/workflows/push/badge.svg?branch=develop)](https://github.com/AndreMiras/coveralls-python-action/actions?query=workflow%3Apush)
+[![Coverage Status](https://coveralls.io/repos/github/AndreMiras/coveralls-python-action/badge.svg?branch=develop)](https://coveralls.io/github/AndreMiras/coveralls-python-action?branch=develop)
 
-Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at [https://github.com/AndreMiras/coveralls-python-action](https://github.com/AndreMiras/coveralls-python-action).
+GitHub Action for Python [Coveralls.io](https://coveralls.io/)
 
-## Versions
+## Usage
+First make sure your `coverage.py` is configured with [`relative_files = True`](https://coverage.readthedocs.io/en/coverage-5.0.4/config.html#config-run-relative-files).
 
-| Version | Tag | Upstream commit |
-|---------|-----|-----------------|
-| v20200413 | [`v20200413`](https://github.com/chainguard-actions/AndreMiras-coveralls-python-action/tree/v20200413) | [`4df6e2e`](https://github.com/AndreMiras/coveralls-python-action/commit/4df6e2e1adfb34a7dd43bc9889f6f6144d005544) |
-| v20201129 | [`v20201129`](https://github.com/chainguard-actions/AndreMiras-coveralls-python-action/tree/v20201129) | [`f5fd5c3`](https://github.com/AndreMiras/coveralls-python-action/commit/f5fd5c309b39d01599fb92c72d4f7409ea78aec9) |
+Then assuming you have a `make test` that runs coverage testing.
+The following workflow will upload it to coveralls.io.
+```yaml
+name: push
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v1
+
+    - name: Unit tests
+      run: make test
+
+    - name: Coveralls
+      uses: AndreMiras/coveralls-python-action@develop
+      with:
+        parallel: true
+
+   coveralls_finish:
+     needs: test
+     runs-on: ubuntu-latest
+     steps:
+     - name: Coveralls Finished
+       uses: AndreMiras/coveralls-python-action@develop
+       with:
+         parallel-finished: true
+         github-token: ${{ secrets.COVERALLS_REPO_TOKEN }}
+```
+
+## Configuration
+```yaml
+- uses: AndreMiras/coveralls-python-action@develop
+  with:
+    # The `GITHUB_TOKEN` or `COVERALLS_REPO_TOKEN`.
+    # Default: ${{ github.token }}
+    github-token: ''
+    # Set to `true` if you are using parallel jobs, then use `parallel-finished: true` for the last action.
+    # Default: false
+    parallel: ''
+    # Set to `true` for the last action when using `parallel: true`.
+    # Note this phase requires `github-token: ${{ secrets.COVERALLS_REPO_TOKEN }}`.
+    # Default: false
+    parallel-finished: ''
+    # Set to true to increase logger verbosity.
+    # Default: false
+    debug: ''
+```
 
 ## Privacy
 
