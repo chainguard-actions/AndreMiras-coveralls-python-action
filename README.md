@@ -8,6 +8,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 
 | Version | Tag | Upstream commit |
 |---------|-----|-----------------|
+| v20200412 | [`v20200412`](https://github.com/chainguard-actions/AndreMiras-coveralls-python-action/tree/v20200412) | [`b6cda81`](https://github.com/AndreMiras/coveralls-python-action/commit/b6cda81e64848116943baa53b473be7f931d910d) |
 | v20200413 | [`v20200413`](https://github.com/chainguard-actions/AndreMiras-coveralls-python-action/tree/v20200413) | [`4df6e2e`](https://github.com/AndreMiras/coveralls-python-action/commit/4df6e2e1adfb34a7dd43bc9889f6f6144d005544) |
 | v20201129 | [`v20201129`](https://github.com/chainguard-actions/AndreMiras-coveralls-python-action/tree/v20201129) | [`f5fd5c3`](https://github.com/AndreMiras/coveralls-python-action/commit/f5fd5c309b39d01599fb92c72d4f7409ea78aec9) |
 
