@@ -1,0 +1,52 @@
+name: push
+on: [push, pull_request]
+
+permissions: {}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+    - uses: actions/checkout@0717577d45739eb3c851188b29f50ed6c0b2194e # v2
+    - uses: actions/setup-python@0f07f7f756721ebd886c2462646a35f78a8bc4de # v1
+
+    - name: Unit tests
+      run: make test
+
+    - name: Default arguments
+      uses: ./
+
+    - name: With --github-token GITHUB_TOKEN
+      uses: ./
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: With --github-token COVERALLS_REPO_TOKEN
+      uses: ./
+      with:
+        github-token: ${{ secrets.COVERALLS_REPO_TOKEN }}
+
+    - name: With --debug
+      uses: ./
+      with:
+        debug: true
+
+    - name: With --parallel
+      uses: ./
+      with:
+        parallel: true
+
+  coveralls_finish:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+    - uses: actions/checkout@0717577d45739eb3c851188b29f50ed6c0b2194e # v2
+    - name: Coveralls Finished
+      uses: ./
+      with:
+        parallel-finished: true
+        debug: true
